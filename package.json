@@ -4,7 +4,7 @@
   "description": "Web-app that displays Twitter Timeline for given user",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server"
   },
   "keywords": [
     "Twitter",
@@ -12,5 +12,8 @@
     "Node"
   ],
   "author": "Ivan Kurysh",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
