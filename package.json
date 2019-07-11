@@ -2,9 +2,13 @@
   "name": "twitter-timeline",
   "version": "1.0.0",
   "description": "Web-app that displays Twitter Timeline for given user",
-  "main": "index.js",
+  "engines": {
+    "node": "10.x",
+    "npm": "6.x"
+  },
   "scripts": {
-    "start": "node server"
+    "start": "node server",
+    "build": "cd react-ui/ && npm install && npm run build"
   },
   "keywords": [
     "Twitter",
@@ -14,6 +18,7 @@
   "author": "Ivan Kurysh",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "path": "^0.12.7"
   }
 }
