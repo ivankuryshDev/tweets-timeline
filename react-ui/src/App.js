@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 
 function App() {
+  
   // use AJAX to get a data from the server
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
@@ -19,16 +20,6 @@ function App() {
   xhttp.open("GET", "/api", true);
   xhttp.send();
   console.log('> Request: OK');
-
-  // fetch('/test')
-  // .then(function(response) {
-  //   console.log('> Response: OK');
-  //   console.log('> ', response.json());
-  // })
-  // .catch(function(error) {
-  //   console.error(error);
-  // });
-
 
   return (
     <div className="App" id="app">
