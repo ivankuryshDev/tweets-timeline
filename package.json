@@ -1,5 +1,5 @@
 {
-  "name": "twitter-timeline",
+  "name": "tweets-timeline",
   "version": "1.0.0",
   "description": "Web-app that displays Twitter Timeline for given user",
   "engines": {
@@ -19,6 +19,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "path": "^0.12.7"
+    "oauth-signature": "^1.5.0",
+    "path": "^0.12.7",
+    "xmlhttprequest": "^1.8.0"
   }
 }
