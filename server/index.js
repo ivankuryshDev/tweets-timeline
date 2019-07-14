@@ -23,7 +23,7 @@ app.get('/api', (req, res) => {
   // request options
   const methodVerb = 'GET';
   const methodUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
-  const screenName= 'SpaceX';
+  const screenName= req.param('screenName');
   const count = 2;
   const tweetMode = 'extended';
 
@@ -68,10 +68,10 @@ app.get('/api', (req, res) => {
       // res.status(this.status).send(this.responseText);
 
       console.log('> Twitter Response: OK');
-      console.log('> ', JSON.parse(this.responseText));
+      // console.log('> ', JSON.parse(this.responseText));
       // console.log('>>', parseTweetTimeline(this.responseText));
     } else if (this.readyState === 4) {
-      res.status(this.status).send('{"TwitterResponse": "Fail"}');
+      res.status(this.status).send(this.responseText);
       
       console.log('> responseText', this.responseText);
       console.log('> Twitter Response: Fail');
@@ -83,6 +83,7 @@ app.get('/api', (req, res) => {
   xhttp.send();
 
   console.log('> Twitter Request: OK');
+  console.log('> UserName:', );
 });
 
 // all remaining requests return the React app
