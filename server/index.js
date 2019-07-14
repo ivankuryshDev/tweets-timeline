@@ -23,8 +23,9 @@ app.get('/api', (req, res) => {
   // request options
   const methodVerb = 'GET';
   const methodUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
-  const screenName= 'NASAHubble';
-  const count = 1;
+  const screenName= 'SpaceX';
+  const count = 2;
+  const tweetMode = 'extended';
 
   // parameters for the authorisation header
   const oauthConsumerKey = consumerKey;
@@ -42,7 +43,8 @@ app.get('/api', (req, res) => {
     oauth_signature_method: oauthSignatureMethod,
     oauth_version: oauthVersion,
     screen_name: screenName,
-    count: count
+    count: count,
+    tweet_mode: tweetMode
   };
 
   // generate an OAuth 1.0a HMAC-SHA1 signature for a HTTP request
@@ -62,10 +64,12 @@ app.get('/api', (req, res) => {
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
-      res.status(this.status).send('{"TwitterResponse": "OK"}');
+      res.status(this.status).send(parseTweetTimeline(this.responseText));
+      // res.status(this.status).send(this.responseText);
 
       console.log('> Twitter Response: OK');
-      console.log('> ', this.responseText);
+      console.log('> ', JSON.parse(this.responseText));
+      // console.log('>>', parseTweetTimeline(this.responseText));
     } else if (this.readyState === 4) {
       res.status(this.status).send('{"TwitterResponse": "Fail"}');
       
@@ -74,7 +78,7 @@ app.get('/api', (req, res) => {
     }
   };
 
-  xhttp.open(methodVerb, `${methodUrl}?count=${count}&screen_name=${screenName}`, true);
+  xhttp.open(methodVerb, `${methodUrl}?count=${count}&screen_name=${screenName}&tweet_mode=${tweetMode}`, true);
   xhttp.setRequestHeader('Authorization', oauthHeader); // set the authorisation header
   xhttp.send();
 
@@ -86,7 +90,36 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
 
-// liste on port
+// listen on port
 app.listen(PORT, function () {
   console.log(`Node server is listening on port ${PORT}...`);
 });
+
+// parse a tweet timeline collection
+const parseTweetTimeline = (tweetTimeline) => {
+  const parsedTweets = [];
+  tweetTimeline = JSON.parse(tweetTimeline);
+
+  tweetTimeline.forEach((element) => {
+    const tweet = {};
+
+    // user data
+    tweet.name = element.user.name;
+    tweet.screenName = element.user.screen_name;
+    tweet.profileImageUrlHttps = element.user.profile_image_url_https;
+    tweet.profileBannerUrl = element.user.profile_banner_url;
+
+    if (element.entities.user_mentions[0]) {
+      tweet.mentionedName = element.entities.user_mentions[0].name;
+      tweet.mentionedScreenName = element.entities.user_mentions[0].screen_name;
+    }
+
+    // tweet data
+    tweet.text = element.full_text;
+    tweet.created_at = element.created_at;
+
+    parsedTweets.push(tweet);
+  });
+
+  return parsedTweets;
+}

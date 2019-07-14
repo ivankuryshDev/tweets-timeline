@@ -9,7 +9,7 @@ function App() {
   xhttp.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
       console.log('> Response: OK');
-      console.log('> ', this.response);
+      console.log('> ', JSON.parse(this.response));
 
       document.getElementById('app').innerText = JSON.parse(this.response);
     } else if (this.readyState === 4) {
