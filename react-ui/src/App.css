@@ -2,3 +2,25 @@
   position: relative;
 }
 
+/* MODAL */
+.modal {
+
+}
+
+.modal__header {
+  border-bottom: none;
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+}
+
+.modal__header > * {
+  font-size: 1.8rem;
+  color: var(--color-grey-dark);
+}
+
+.modal__footer {
+  border-top: none;
+}
+
+
+

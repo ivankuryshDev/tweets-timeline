@@ -1,0 +1,81 @@
+.Tweet {
+  background-color: #fff;
+  width: 36rem;
+  margin-bottom: .2rem;
+  padding: 1.2rem;
+  font-size: 1.4rem;
+  display: flex;
+}
+
+.Tweet:first-child {
+  margin-top: 1rem;
+}
+
+.Tweet:hover {
+  background-color: var(--color-twitter-light-2);
+}
+
+.Tweet__left-bar {
+  width: 20%;
+}
+
+.Tweet__right-bar {
+  width: 80%;
+}
+
+.Tweet__avatar {
+  width: 4.8rem;
+  height: auto;
+  border-radius: 10rem;
+}
+
+.Tweet__name {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.Tweet__screen-name {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--color-grey-dark-2);
+  padding-left: .4rem;
+}
+
+.Tweet__date-creation {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--color-grey-dark-2);
+}
+
+.Tweet__date-creation::before {
+  content: "\00b7";
+  padding: 0 .4rem;
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+/* No media query for `xs` since this is the default in Bootstrap */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .Tweet {
+    background-color: #fff;
+    width: 48rem;
+  }
+
+  .Tweet__left-bar {
+    width: 15%;
+  }
+  
+  .Tweet__right-bar {
+    width: 85%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {}

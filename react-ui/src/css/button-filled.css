@@ -1,0 +1,18 @@
+
+.button--filled {
+  background-color: var(--color-twitter-primary);
+  border-color: var(--color-twitter-primary);
+  color: #fff;
+  box-shadow: none;
+  border-radius: 10rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 2rem;
+  padding: .6rem 1.6rem;
+}
+
+.button--filled:active,
+.button--filled:hover {
+  background-color: var(--color-twitter-primary-dark) !important;
+  border-color: var(--color-twitter-primary-dark) !important;
+}
