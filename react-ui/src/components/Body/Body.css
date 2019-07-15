@@ -1,0 +1,9 @@
+.Body {
+  margin-top: 5rem;
+  width: 100%;
+  background-color: transparent;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

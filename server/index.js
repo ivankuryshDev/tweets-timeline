@@ -24,7 +24,7 @@ app.get('/api', (req, res) => {
   const methodVerb = 'GET';
   const methodUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
   const screenName= req.param('screenName');
-  const count = 2;
+  const count = 10;
   const tweetMode = 'extended';
 
   // parameters for the authorisation header
@@ -68,7 +68,7 @@ app.get('/api', (req, res) => {
       // res.status(this.status).send(this.responseText);
 
       console.log('> Twitter Response: OK');
-      // console.log('> ', JSON.parse(this.responseText));
+      console.log('> ', JSON.parse(this.responseText));
       // console.log('>>', parseTweetTimeline(this.responseText));
     } else if (this.readyState === 4) {
       res.status(this.status).send(this.responseText);
@@ -116,8 +116,9 @@ const parseTweetTimeline = (tweetTimeline) => {
     }
 
     // tweet data
+    tweet.id = element.id_str;
     tweet.text = element.full_text;
-    tweet.created_at = element.created_at;
+    tweet.createdAt = element.created_at;
 
     parsedTweets.push(tweet);
   });

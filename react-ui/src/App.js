@@ -4,12 +4,14 @@ import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import './App.css';
 import './css/button-filled.css';
 import Header from './components/Header/Header';
+import Body from './components/Body/Body';
 
 const DEFAULT_SCREEN_NAME = 'SpaceX';
 const DEFAULT_MESSAGE = 'Error';
 
 class App extends Component {
   state = {
+    timeline: [],
     user: {
       name: DEFAULT_MESSAGE,
       screenName: DEFAULT_MESSAGE
@@ -76,7 +78,7 @@ class App extends Component {
     return (
       <div className="App" id="app">
         <Header user={this.state.user} onGetTweetCollection={this.getTweetCollection} />
-        Hello World!
+        <Body timeline={this.state.timeline} />
         <Modal isOpen={this.state.modal} toggle={this.toggleModal} className="modal" centered>
           <ModalHeader className="modal__header d-flex justify-content-center" toggle={this.toggle}>{this.state.error}</ModalHeader>
           <ModalFooter className="modal__footer d-flex justify-content-center">
