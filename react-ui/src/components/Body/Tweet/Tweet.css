@@ -29,6 +29,20 @@
   border-radius: 10rem;
 }
 
+.tweet-info {}
+
+.Tweet__retweet {
+  color: var(--color-grey-dark-2);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.Tweet__retweet--hidden {
+  display: none;
+}
+
+.Tweet__retweet-mark {}
+
 .Tweet__name {
   font-size: 1.4rem;
   font-weight: 700;

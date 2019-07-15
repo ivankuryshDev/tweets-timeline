@@ -31,7 +31,7 @@ class Header extends Component {
       <div className="Header">
         <div className="container">
           <div className="row">
-            <div className="order-1 col-4 col-md-4 d-flex justify-content-start">
+            <div className="order-1 col-5 col-md-4 d-flex justify-content-start">
               <div className="user">
                 <p className="user__name">{this.props.user.name}</p>
                 <p className="user__screen-name">@{this.props.user.screenName}</p>
@@ -40,7 +40,7 @@ class Header extends Component {
             <div className="order-0 order-md-1 col-2 col-md-4 d-flex justify-content-end justify-content-md-center align-items-center">
               <i className="twitter-icon fab fa-twitter"></i>
             </div>
-            <div className="order-1 col-6 col-md-4 d-flex justify-content-end align-items-center">
+            <div className="order-1 col-5 col-md-4 d-flex justify-content-end align-items-center">
               <Form className="form" onSubmit={this.onSubmitSearch}>
                 <Input className="form__input"
                   placeholder="Search Timeline"

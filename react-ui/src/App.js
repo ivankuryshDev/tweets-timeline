@@ -7,7 +7,7 @@ import Header from './components/Header/Header';
 import Body from './components/Body/Body';
 
 const DEFAULT_SCREEN_NAME = 'SpaceX';
-const DEFAULT_MESSAGE = 'Error';
+const DEFAULT_MESSAGE = 'Loading...';
 
 class App extends Component {
   state = {

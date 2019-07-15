@@ -7,23 +7,39 @@ const oauthSignature = require('oauth-signature');
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+// consumer keys and access tokes
+const consumerKey = 'JPX4ELItftoilsoq4bFquPBDZ';
+const consumerSecret = 'KtoIZ9XsNWY9CoZ52n8Tlh3JkbHqIbVtOoQAj9JvK8UTtFbvuc';
+const accessToken = '1149412668610138112-xxHmn6HPnSF5dQ4bNriuH82sI6l2CT';
+const accessTokenSecret = 'kTlCwfuvPv323SeEKUoQ1B7Lp0EHuww9z1rNUQeYigMQj';
+
 // priority serve any static files
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 // answer API requests
 app.get('/api', (req, res) => {
   res.set('Content-Type', 'application/json');
+  getTimeline(req, res);
 
-  // consumer keys and access tokes
-  const consumerKey = 'JPX4ELItftoilsoq4bFquPBDZ';
-  const consumerSecret = 'KtoIZ9XsNWY9CoZ52n8Tlh3JkbHqIbVtOoQAj9JvK8UTtFbvuc';
-  const accessToken = '1149412668610138112-xxHmn6HPnSF5dQ4bNriuH82sI6l2CT';
-  const accessTokenSecret = 'kTlCwfuvPv323SeEKUoQ1B7Lp0EHuww9z1rNUQeYigMQj';
+  console.log('> Twitter Request: OK');
+});
 
+// all remaining requests return the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
+});
+
+// listen on port
+app.listen(PORT, function () {
+  console.log(`Node server is listening on port ${PORT}...`);
+});
+
+// get a twitter timeline
+const getTimeline = (req, res) => {
   // request options
   const methodVerb = 'GET';
   const methodUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
-  const screenName= req.param('screenName');
+  const screenName = req.param('screenName');
   const count = 10;
   const tweetMode = 'extended';
 
@@ -31,7 +47,7 @@ app.get('/api', (req, res) => {
   const oauthConsumerKey = consumerKey;
   const oauthToken = accessToken;
   const oauthNonce = crypto.randomBytes(64).toString('hex');
-  const oauthTimestamp = Math.floor((new Date).getTime()/1000);
+  const oauthTimestamp = Math.floor((new Date).getTime() / 1000);
   const oauthSignatureMethod = 'HMAC-SHA1';
   const oauthVersion = '1.0'
 
@@ -68,11 +84,11 @@ app.get('/api', (req, res) => {
       // res.status(this.status).send(this.responseText);
 
       console.log('> Twitter Response: OK');
-      console.log('> ', JSON.parse(this.responseText));
+      // console.log('> ', JSON.parse(this.responseText));
       // console.log('>>', parseTweetTimeline(this.responseText));
     } else if (this.readyState === 4) {
       res.status(this.status).send(this.responseText);
-      
+
       console.log('> responseText', this.responseText);
       console.log('> Twitter Response: Fail');
     }
@@ -81,20 +97,7 @@ app.get('/api', (req, res) => {
   xhttp.open(methodVerb, `${methodUrl}?count=${count}&screen_name=${screenName}&tweet_mode=${tweetMode}`, true);
   xhttp.setRequestHeader('Authorization', oauthHeader); // set the authorisation header
   xhttp.send();
-
-  console.log('> Twitter Request: OK');
-  console.log('> UserName:', );
-});
-
-// all remaining requests return the React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
-});
-
-// listen on port
-app.listen(PORT, function () {
-  console.log(`Node server is listening on port ${PORT}...`);
-});
+}
 
 // parse a tweet timeline collection
 const parseTweetTimeline = (tweetTimeline) => {
@@ -110,9 +113,13 @@ const parseTweetTimeline = (tweetTimeline) => {
     tweet.profileImageUrlHttps = element.user.profile_image_url_https;
     tweet.profileBannerUrl = element.user.profile_banner_url;
 
-    if (element.entities.user_mentions[0]) {
-      tweet.mentionedName = element.entities.user_mentions[0].name;
-      tweet.mentionedScreenName = element.entities.user_mentions[0].screen_name;
+    if (element.retweeted_status) {
+      tweet.isRetweet = true;
+      tweet.mentionedName = element.retweeted_status.user.name;
+      tweet.mentionedScreenName = element.retweeted_status.user.screen_name;
+      tweet.mentionedProfileImageUrlHttps = element.retweeted_status.user.profile_image_url_https;
+    } else {
+      tweet.isRetweet = false;
     }
 
     // tweet data
