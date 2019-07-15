@@ -24,8 +24,6 @@ class Tweet extends Component {
     else if (hours < 24) { result = hours + 'h' }
     else { result = `${months[then.getMonth()]} ${then.getDate()}` };
 
-    console.log('result', result);
-
     return result;
   }
 
@@ -36,8 +34,6 @@ class Tweet extends Component {
     const createdAt = this.props.data.createdAt;
     const profileImageUrlHttps = this.props.data.profileImageUrlHttps;
     const message = this.props.data.text;
-
-
 
     return (
       <Fragment>
