@@ -19,7 +19,7 @@ class Tweet extends Component {
     const hours = Math.floor(duration / 60);
 
     let result = null;
-    if (seconds < 60) {result = seconds + 's' }
+    if (seconds < 60) { result = seconds + 's' }
     else if (minutes < 60) { result = minutes + 'm' }
     else if (hours < 24) { result = hours + 'h' }
     else { result = `${months[then.getMonth()]} ${then.getDate()}` };
@@ -29,11 +29,24 @@ class Tweet extends Component {
 
 
   render() {
-    const name = this.props.data.name;
-    const screenName = this.props.data.screenName;
     const createdAt = this.props.data.createdAt;
-    const profileImageUrlHttps = this.props.data.profileImageUrlHttps;
-    const message = this.props.data.text;
+    let message = this.props.data.text;
+    const isRetweet = this.props.data.isRetweet;
+
+    let name = null;
+    let screenName = null;
+    let profileImageUrlHttps = null;
+
+    if (isRetweet) {
+      name = this.props.data.mentionedName;
+      screenName = this.props.data.mentionedScreenName;
+      profileImageUrlHttps = this.props.data.mentionedProfileImageUrlHttps;
+      message = message.replace(`RT @${screenName}:`, '');
+    } else {
+      name = this.props.data.name;
+      screenName = this.props.data.screenName;
+      profileImageUrlHttps = this.props.data.profileImageUrlHttps;
+    }
 
     return (
       <Fragment>
@@ -42,7 +55,10 @@ class Tweet extends Component {
             <img className="Tweet__avatar" src={profileImageUrlHttps} alt="avatar" />
           </div>
           <div className="Tweet__right-bar">
-            <div className="Tweet__heading">
+            <div className={isRetweet ? 'Tweet__retweet' : 'Tweet__retweet Tweet__retweet--hidden'}>
+              <span className="Tweet__retweet-mark">Retweet</span>
+            </div>
+            <div className="Tweet__tweet-info">
               <span className="Tweet__name">{name}</span>
               <span className="Tweet__screen-name">@{screenName}</span>
               <span className="Tweet__date-creation">{this.msToTime(createdAt)}</span>
