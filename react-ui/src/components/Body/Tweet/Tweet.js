@@ -40,12 +40,12 @@ class Tweet extends Component {
     if (isRetweet) {
       name = this.props.data.mentionedName;
       screenName = this.props.data.mentionedScreenName;
-      profileImageUrlHttps = this.props.data.mentionedProfileImageUrlHttps;
+      profileImageUrlHttps = this.props.data.mentionedProfileImageUrlHttps.replace('normal', 'bigger');
       message = message.replace(`RT @${screenName}:`, '');
     } else {
       name = this.props.data.name;
       screenName = this.props.data.screenName;
-      profileImageUrlHttps = this.props.data.profileImageUrlHttps;
+      profileImageUrlHttps = this.props.data.profileImageUrlHttps.replace('normal', 'bigger');
     }
 
     return (

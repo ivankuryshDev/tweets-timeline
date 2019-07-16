@@ -8,6 +8,7 @@ import Body from './components/Body/Body';
 
 const DEFAULT_SCREEN_NAME = 'SpaceX';
 const DEFAULT_MESSAGE = 'Loading...';
+const COUNT_NEW_TWEETS = 10;
 
 class App extends Component {
   state = {
@@ -17,9 +18,9 @@ class App extends Component {
       screenName: DEFAULT_MESSAGE
     },
     modal: false,
-    error: ''
+    error: '',
+    countTweets: 10
   };
-
 
   // toggle a modal
   toggleModal = () => {
@@ -62,15 +63,30 @@ class App extends Component {
       }
     };
 
-    xhttp.open(method, url + `?screenName=${screenName}`, true);
+    xhttp.open(method, url + `?screenName=${screenName}&countTweets=${this.state.countTweets}`, true);
     xhttp.send();
 
     console.log('> Request: OK');
   }
 
   componentDidMount() {
+    const App = this;
+
     // get a tweet timeline after the app has been started
     this.getTweetCollection(DEFAULT_SCREEN_NAME);
+
+    // load new weets if the end of the page has been reached
+    window.addEventListener('scroll', event => {
+			const bodyElement = document.getElementsByTagName('html')[0];
+
+			if (bodyElement.scrollHeight - bodyElement.scrollTop === bodyElement.clientHeight) { 
+        console.log('> Reached the end of the page');
+        App.setState(prevState => ({
+          countTweets: prevState.countTweets + COUNT_NEW_TWEETS
+        }));
+        App.getTweetCollection(App.state.user.screenName);
+			}
+		});
   }
 
   render() {

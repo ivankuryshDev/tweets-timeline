@@ -40,7 +40,7 @@ const getTimeline = (req, res) => {
   const methodVerb = 'GET';
   const methodUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
   const screenName = req.param('screenName');
-  const count = 10;
+  const count = req.param('countTweets');
   const tweetMode = 'extended';
 
   // parameters for the authorisation header
