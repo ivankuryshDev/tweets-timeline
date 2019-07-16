@@ -16,7 +16,7 @@ class Tweet extends Component {
 
     const seconds = Math.floor(duration / 1000);
     const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(duration / 60);
+    const hours = Math.floor(minutes / 60);
 
     let result = null;
     if (seconds < 60) { result = seconds + 's' }
@@ -41,12 +41,44 @@ class Tweet extends Component {
       name = this.props.data.mentionedName;
       screenName = this.props.data.mentionedScreenName;
       profileImageUrlHttps = this.props.data.mentionedProfileImageUrlHttps.replace('normal', 'bigger');
-      message = message.replace(`RT @${screenName}:`, '');
     } else {
       name = this.props.data.name;
       screenName = this.props.data.screenName;
       profileImageUrlHttps = this.props.data.profileImageUrlHttps.replace('normal', 'bigger');
     }
+
+    message = message.split(' ');
+    const punctuationMarks = ['', '.', ',', '!', '?', "'", '"'];
+
+    for (let i = 0; i < message.length; i++) {
+
+      // remove all media links
+      if (message[i].includes('http', 0)) {
+        message[i] = '';
+      }
+
+      // hightlight hashtags
+      punctuationMarks.forEach(element => {
+        if (message[i][0] === '#') {
+          message[i] = <Fragment>
+            <span style={{ color: 'var(--color-twitter-primary-dark)' }}>{message[i]}</span>{element}
+          </Fragment>;
+        }
+      });
+
+      // hightlight mentioned people
+      punctuationMarks.forEach(element => {
+        if (message[i][0] === '@') {
+          message[i] = (
+            <Fragment>
+              <span style={{ color: 'var(--color-twitter-primary-dark)' }}>{message[i]}</span>{element}
+            </Fragment>);
+        }
+      });
+    }
+
+
+    // console.log('message', message);
 
     return (
       <Fragment>
@@ -63,7 +95,9 @@ class Tweet extends Component {
               <span className="Tweet__screen-name">@{screenName}</span>
               <span className="Tweet__date-creation">{this.msToTime(createdAt)}</span>
             </div>
-            {message}
+            {message.map(element => {
+              return <Fragment key={Math.random()}>{element} </Fragment>;
+            })}
           </div>
         </div>
       </Fragment>

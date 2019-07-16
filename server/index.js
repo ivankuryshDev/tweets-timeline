@@ -85,7 +85,7 @@ const getTimeline = (req, res) => {
 
       console.log('> Twitter Response: OK');
       // console.log('> ', JSON.parse(this.responseText));
-      // console.log('>>', parseTweetTimeline(this.responseText));
+      console.log('>>', parseTweetTimeline(this.responseText));
     } else if (this.readyState === 4) {
       res.status(this.status).send(this.responseText);
 
@@ -107,25 +107,30 @@ const parseTweetTimeline = (tweetTimeline) => {
   tweetTimeline.forEach((element) => {
     const tweet = {};
 
+    // tweet data
+    tweet.id = element.id_str;
+    tweet.text = element.full_text;
+    tweet.createdAt = element.created_at;
+
     // user data
     tweet.name = element.user.name;
     tweet.screenName = element.user.screen_name;
     tweet.profileImageUrlHttps = element.user.profile_image_url_https;
     tweet.profileBannerUrl = element.user.profile_banner_url;
 
+    // parse retweet data
     if (element.retweeted_status) {
       tweet.isRetweet = true;
       tweet.mentionedName = element.retweeted_status.user.name;
       tweet.mentionedScreenName = element.retweeted_status.user.screen_name;
       tweet.mentionedProfileImageUrlHttps = element.retweeted_status.user.profile_image_url_https;
+      tweet.text = element.retweeted_status.full_text;
+
     } else {
       tweet.isRetweet = false;
     }
 
-    // tweet data
-    tweet.id = element.id_str;
-    tweet.text = element.full_text;
-    tweet.createdAt = element.created_at;
+
 
     parsedTweets.push(tweet);
   });

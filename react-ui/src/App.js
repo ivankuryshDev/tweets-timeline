@@ -6,21 +6,21 @@ import './css/button-filled.css';
 import Header from './components/Header/Header';
 import Body from './components/Body/Body';
 
-const DEFAULT_SCREEN_NAME = 'SpaceX';
-const DEFAULT_MESSAGE = 'Loading...';
+const DEFAULT_SCREEN_NAME = 'barackobama';
 const COUNT_NEW_TWEETS = 10;
 
 class App extends Component {
   state = {
     timeline: [],
     user: {
-      name: DEFAULT_MESSAGE,
-      screenName: DEFAULT_MESSAGE
+      name: 'Loading...',
+      screenName: 'Loading...'
     },
     modal: false,
-    error: '',
-    countTweets: 10
+    error: ''
   };
+
+  countTweets = 10;
 
   // toggle a modal
   toggleModal = () => {
@@ -43,12 +43,12 @@ class App extends Component {
 
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
-        App.setState({ timeline: JSON.parse(this.response) });
         App.setState({
           user: {
-            name: JSON.parse(this.response)[0].name,
             screenName: JSON.parse(this.response)[0].screenName,
-          }
+            name: JSON.parse(this.response)[0].name
+          },
+          timeline: JSON.parse(this.response)
         });
 
         console.log('> Response: OK');
@@ -57,13 +57,17 @@ class App extends Component {
 
       } else if (this.readyState === 4) {
         console.error('> Response: Fail');
-        console.log(JSON.parse(this.responseText).errors[0].message);
-        App.setState({ error: (JSON.parse(this.responseText).errors[0].message) });
+        console.log(JSON.parse(this.responseText));
+        if (JSON.parse(this.responseText).errors) {
+          App.setState({ error: JSON.parse(this.responseText).errors[0].message });
+        } else {
+          App.setState({ error: JSON.parse(this.responseText).error });
+        }
         App.toggleModal();
       }
     };
 
-    xhttp.open(method, url + `?screenName=${screenName}&countTweets=${this.state.countTweets}`, true);
+    xhttp.open(method, url + `?screenName=${screenName}&countTweets=${this.countTweets}`, true);
     xhttp.send();
 
     console.log('> Request: OK');
@@ -77,16 +81,14 @@ class App extends Component {
 
     // load new weets if the end of the page has been reached
     window.addEventListener('scroll', event => {
-			const bodyElement = document.getElementsByTagName('html')[0];
+      const bodyElement = document.getElementsByTagName('html')[0];
 
-			if (bodyElement.scrollHeight - bodyElement.scrollTop === bodyElement.clientHeight) { 
+      if (Math.floor(bodyElement.scrollHeight - bodyElement.scrollTop) === bodyElement.clientHeight) {
         console.log('> Reached the end of the page');
-        App.setState(prevState => ({
-          countTweets: prevState.countTweets + COUNT_NEW_TWEETS
-        }));
-        App.getTweetCollection(App.state.user.screenName);
-			}
-		});
+        App.countTweets += COUNT_NEW_TWEETS;
+        App.getTweetCollection(this.state.user.screenName);
+      }
+    });
   }
 
   render() {
