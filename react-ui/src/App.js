@@ -81,8 +81,8 @@ class App extends Component {
         App.toggleModal();
 
         // hide the loader and show the twitter icon
-        document.getElementsByClassName('loader')[0].add('loader--hidden');
-        document.getElementsByClassName('twitter-icon')[0].remove('twitter-icon--hidden');
+        document.getElementsByClassName('loader')[0].classList.add('loader--hidden');
+        document.getElementsByClassName('twitter-icon')[0].classList.remove('twitter-icon--hidden');
       }
     };
 
