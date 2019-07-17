@@ -65,6 +65,13 @@
   font-weight: 700;
 }
 
+.Tweet__tweet-info:active .Tweet__name,
+.Tweet__tweet-info:hover .Tweet__name {
+  color: var(--color-twitter-primary-dark);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .Tweet__screen-name {
   font-size: 1.4rem;
   font-weight: 400;
@@ -81,6 +88,16 @@
 .Tweet__date-creation::before {
   content: "\00b7";
   padding: 0 .4rem;
+}
+
+.Tweet__mentioned-name {
+  color: var(--color-twitter-primary-dark);
+  cursor: pointer;
+}
+
+.Tweet__mentioned-name:active,
+.Tweet__mentioned-name:hover {
+  text-decoration: underline;
 }
 
 /* Extra small devices (portrait phones, less than 576px) */

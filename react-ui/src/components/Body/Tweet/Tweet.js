@@ -62,6 +62,12 @@ class Tweet extends Component {
       profileImageUrlHttps = this.props.data.profileImageUrlHttps.replace('normal', 'bigger');
     }
 
+    const idTweetAuthor = Math.random();
+    this.mentionedNames.push({
+      name: screenName,
+      id: idTweetAuthor
+    });
+
     // make from the tweet an array of the words
     message = message.split(' ');
 
@@ -95,10 +101,7 @@ class Tweet extends Component {
 
         handledMessage.push(
           <Fragment>
-            <span id={id} style={{
-              color: 'var(--color-twitter-primary-dark)',
-              cursor: 'pointer'
-            }}>{atName}</span>{rest}
+            <span id={id} className="Tweet__mentioned-name">{atName}</span>{rest}
           </Fragment>
         );
 
@@ -150,7 +153,7 @@ class Tweet extends Component {
             <span className="Tweet__retweet-mark">Retweet</span>
           </div>
           <div className="Tweet__tweet-info">
-            <span className="Tweet__name">{name}</span>
+            <span className="Tweet__name" id={idTweetAuthor}>{name}</span>
             <span className="Tweet__screen-name">@{screenName}</span>
             <span className="Tweet__date-creation">{this.msToTime(createdAt)}</span>
           </div>

@@ -7,7 +7,7 @@ import './css/loader.css';
 import Header from './components/Header/Header';
 import Body from './components/Body/Body';
 
-const DEFAULT_SCREEN_NAME = 'nasa';
+const DEFAULT_SCREEN_NAME = 'barackobama';
 const COUNT_NEW_TWEETS = 10;
 
 class App extends Component {
