@@ -19,10 +19,12 @@
 .user__name {
   font-size: 1.8rem;
   margin-bottom: 0;
+  margin-top: .5rem;
+  line-height: 1;
 }
 
 .user__screen-name {
-  margin-top: -.6rem;
+  margin-top: 0;
   margin-bottom: .4rem;
   font-size: 1.4rem;
   color: var(--color-grey-dark-2);
@@ -33,6 +35,10 @@
 .twitter-icon {
   color: var(--color-twitter-primary);
   font-size: 2.2rem;
+}
+
+.twitter-icon--hidden {
+  display: none;
 }
 
 /* SEARCH FIELD */

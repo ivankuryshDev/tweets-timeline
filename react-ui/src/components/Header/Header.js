@@ -11,7 +11,7 @@ class Header extends Component {
 
     // make a request if the input field is not empty
     if (this.inputField.value) {
-      this.props.onGetTweetCollection(this.inputField.value);
+      this.props.onGetTweetCollection(this.inputField.value, true);
     }
   }
 
@@ -39,6 +39,7 @@ class Header extends Component {
             </div>
             <div className="order-0 order-md-1 col-2 col-md-4 d-flex justify-content-end justify-content-md-center align-items-center">
               <i className="twitter-icon fab fa-twitter"></i>
+              <div className="loader loader--hidden"></div>
             </div>
             <div className="order-1 col-5 col-md-4 d-flex justify-content-end align-items-center">
               <Form className="form" onSubmit={this.onSubmitSearch}>
