@@ -85,7 +85,7 @@ const getTimeline = (req, res) => {
 
       console.log('> Twitter Response: OK');
       // console.log('> ', JSON.parse(this.responseText));
-      console.log('>>', parseTweetTimeline(this.responseText));
+      // console.log('>>', parseTweetTimeline(this.responseText));
     } else if (this.readyState === 4) {
       res.status(this.status).send(this.responseText);
 

@@ -5,6 +5,13 @@
   padding: 1.2rem;
   font-size: 1.4rem;
   display: flex;
+
+  -webkit-animation-name: fadeout; 
+  -webkit-animation-duration: 1s; 
+  animation-name: fadeout;
+  animation-duration: 1s;
+
+  
 }
 
 .Tweet:first-child {
@@ -13,6 +20,16 @@
 
 .Tweet:hover {
   background-color: var(--color-twitter-light-2);
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .Tweet__left-bar {

@@ -1,0 +1,19 @@
+.loader {
+  border: 1px solid var(--color-twitter-light);
+  border-radius: 50%;
+  border-top: 1px solid var(--color-twitter-primary-dark);
+  border-bottom: 1px solid var(--color-twitter-primary-dark);
+  width: 2.6rem;
+  height: 2.6rem;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+.loader--hidden {
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

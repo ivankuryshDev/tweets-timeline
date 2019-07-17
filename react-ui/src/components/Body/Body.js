@@ -11,7 +11,7 @@ class Body extends Component {
     return (
       <div className="Body">
         {timeline.map(tweet =>
-          <Tweet key={tweet.id} data={tweet} />
+          <Tweet key={tweet.id} data={tweet} onGetTweetCollection={this.props.onGetTweetCollection} />
         )}
       </div>
     );
