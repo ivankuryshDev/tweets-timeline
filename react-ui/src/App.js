@@ -51,7 +51,7 @@ class App extends Component {
       if (this.readyState === 4 && this.status === 200) {
 
         if (load) {
-          window.scrollTo(0, 0); // scroll to top of the page if a new timeline has been loaded
+          window.scrollTo(0, 0); // scroll to the top of the page if a new timeline has been loaded
         }
 
         App.setState({

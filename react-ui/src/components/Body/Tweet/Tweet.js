@@ -5,7 +5,7 @@ import './Tweet.css';
 class Tweet extends Component {
   mentionedNames = [];
 
-  // convert a time creation of the tweet into an easy readable format
+  // convert a time label into a readable format
   msToTime = (createdAt) => {
     const months = ["Jan", "Feby", "Mar", "Apr",
       "May", "Jun", "Jul", "Aug",
@@ -37,9 +37,16 @@ class Tweet extends Component {
     }
   }
 
-  // do not update the tweet component, it is immutible
+  // do not update the tweet component if a time labe is not changed
   shouldComponentUpdate(nextProps, nextState) {
-    return false;
+    if (this.msToTime(nextProps.createdAt) === this.msToTime(this.props.data.createdAt)) {
+      return false;
+    } else {
+      console.log('> updated');
+      console.log('> thisProps', this.msToTime(this.props.data.createdAt));
+      console.log('> nextProps', this.msToTime(nextProps.data.createdAt));
+      return true;
+    }
   }
 
   render() {
@@ -51,7 +58,7 @@ class Tweet extends Component {
     let screenName = null;
     let profileImageUrlHttps = null;
 
-    // check if it is a tweet or retweet
+    // check if it is either a tweet or a retweet
     if (isRetweet) {
       name = this.props.data.mentionedName;
       screenName = this.props.data.mentionedScreenName;
@@ -68,22 +75,24 @@ class Tweet extends Component {
       id: idTweetAuthor
     });
 
-    // make from the tweet an array of the words
+    // make an array of the words from the tweet 
     message = message.split(' ');
 
     const handledMessage = [];
     const punctuationMarks = ['.', ',', '!', '?', '\'', '’', '"', ':', ';'];
 
+    // handle all entities
     for (let i = 0; i < message.length; i++) {
+      const idWord = this.props.data.id + i;
+      const idMentionedName = idWord + '_link';
 
-      // check if this word is a mentioned name
+      // check if the word is a mentioned name
       if (message[i][0] === '@') {
-        // message[i] = atName + rest
-        // atName = @ + name
         let atName = message[i];
         let rest = '';
         let name = atName.replace('@', '');
 
+        // check if a mentioned name has a punctuation mark in the end
         for (let j = 0; j < punctuationMarks.length; j++) {
           const index = message[i].indexOf(punctuationMarks[j]);
           if (index > -1) {
@@ -93,23 +102,21 @@ class Tweet extends Component {
           }
         }
 
-        const id = Math.random();
+        // write a mentioned name and its id to add an event listener 
         this.mentionedNames.push({
           name: name,
-          id: id
+          id: idMentionedName
         });
 
         handledMessage.push(
-          <Fragment>
-            <span id={id} className="Tweet__mentioned-name">{atName}</span>{rest}
-          </Fragment>
-        );
-
-      } else if (message[i][0] === '#') { // check if this word is a hashtag
-        // message[i] = hashTag + rest
+          <Fragment key={idWord}>
+            <span id={idMentionedName} className="Tweet__mentioned-name">{atName}</span>{rest + ' '}
+          </Fragment>);
+      } else if (message[i][0] === '#') { // check if the word is a hashtag
         let hashTag = message[i];
         let rest = '';
 
+        // check if a hashtag has a punctuation mark in the end
         for (let j = 0; j < punctuationMarks.length; j++) {
           const index = message[i].indexOf(punctuationMarks[j]);
           if (index > -1) {
@@ -119,27 +126,30 @@ class Tweet extends Component {
         }
 
         handledMessage.push(
-          <Fragment>
+          <Fragment key={idWord}>
             <span style={{
               color: 'var(--color-twitter-primary-dark)'
-            }}>{hashTag}</span>{rest}
-          </Fragment>
-        );
+            }}>{hashTag}</span>{rest + ' '}
+          </Fragment>);
       } else if (message[i].includes('https')) { // hightlight all media links
         const index = message[i].indexOf('http');
         const prefix = message[i].substring(0, index);
         const link = message[i].substring(index, message[i].length);
 
         handledMessage.push(
-          <Fragment>
+          <Fragment key={idWord}>
             {prefix}
             <span style={{
               color: 'var(--color-twitter-primary-dark)'
-            }}>{link.replace('https://', '')}</span>
+            }}>{link.replace('https://', '')}</span>{' '}
           </Fragment>);
       }
       else {
-        handledMessage.push(message[i]);
+        // message[i] is an ordinary word
+        handledMessage.push(
+          <Fragment key={idWord}>
+            {message[i]}{' '}
+          </Fragment>);
       }
     }
 
@@ -158,7 +168,7 @@ class Tweet extends Component {
             <span className="Tweet__date-creation">{this.msToTime(createdAt)}</span>
           </div>
           {handledMessage.map(element => {
-            return <Fragment key={Math.random()}>{element} </Fragment>;
+            return element;
           })}
         </div>
       </div>
