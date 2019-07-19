@@ -32,8 +32,10 @@ class Tweet extends Component {
     // create a new listener for loading of a mentioned user's timeline
     for (let i = 0; i < this.mentionedNames.length; i++) {
       const element = this.mentionedNames[i];
-      document.getElementById(element.id).addEventListener('click',
-        () => this.props.onGetTweetCollection(element.name, true));
+      if (document.getElementById(element.id)) {
+        document.getElementById(element.id).addEventListener('click',
+          () => this.props.onGetTweetCollection(element.name, true));
+      }
     }
   }
 
@@ -41,18 +43,16 @@ class Tweet extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (this.msToTime(nextProps.createdAt) === this.msToTime(this.props.data.createdAt)) {
       return false;
-    } else {
-      console.log('> updated');
-      console.log('> thisProps', this.msToTime(this.props.data.createdAt));
-      console.log('> nextProps', this.msToTime(nextProps.data.createdAt));
-      return true;
-    }
+    } else { return true }
   }
 
   render() {
     const createdAt = this.props.data.createdAt;
     const isRetweet = this.props.data.isRetweet;
     let message = this.props.data.text;
+
+    const handledMessage = [];
+    const punctuationMarks = ['.', ',', '!', '?', '\'', '’', '"', ':', ';'];
 
     let name = null;
     let screenName = null;
@@ -77,9 +77,6 @@ class Tweet extends Component {
 
     // make an array of the words from the tweet 
     message = message.split(' ');
-
-    const handledMessage = [];
-    const punctuationMarks = ['.', ',', '!', '?', '\'', '’', '"', ':', ';'];
 
     // handle all entities
     for (let i = 0; i < message.length; i++) {
@@ -143,8 +140,7 @@ class Tweet extends Component {
               color: 'var(--color-twitter-primary-dark)'
             }}>{link.replace('https://', '')}</span>{' '}
           </Fragment>);
-      }
-      else {
+      } else {
         // message[i] is an ordinary word
         handledMessage.push(
           <Fragment key={idWord}>
