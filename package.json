@@ -18,7 +18,7 @@
   "author": "Ivan Kurysh",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "oauth-signature": "^1.5.0",
     "path": "^0.12.7",
     "xmlhttprequest": "^1.8.0"
